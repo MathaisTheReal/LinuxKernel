@@ -1,4 +1,6 @@
-#include ".h"
+#include "custom_msgbox_get.h"
+#include "linux/kernel.h"
+#include "linux/unistd.h"
 #include "linux.slab.h"
 #include "linux.uacess.h"
 #include <stdlib.h>
@@ -6,6 +8,8 @@
 #include/uapi/asm-generic/errno.h
 #include/uapi/asm-generic/errno-base.h
 include/linux/irqflags.h
+
+asmlinkage 
 
 typedef struct _msg_t msg_t;
 
@@ -17,7 +21,7 @@ struct _msg_t{
 
 static msg_t *top = NULL;
 
-int custom_msgbox_put( char *buffer, int length ) {
+int sys_custom_msgbox_get( char *buffer, int length ) {
   if(sizeof(buffer) != sizeof(msg->message)
   {
   return -2
@@ -38,7 +42,7 @@ int custom_msgbox_put( char *buffer, int length ) {
   msg->previous = NULL;
   msg->length = length;
   msg->message = kmalloc(length, );
-  copy_from_user(buffer, msg->message, length)
+  copy_to_user(buffer, msg->message, length)
   // needs eroor handing with errno.h or .base
 
   
@@ -54,33 +58,5 @@ int custom_msgbox_put( char *buffer, int length ) {
     kfree(msg->message);
     kfree(msg);
     return 0;
-
-}
-
-int custom_msgbox_get( char* buffer, int length ) {
-  if (top != NULL) {
-    msg_t* msg = top;
-    int mlength = msg->length;
-    top = msg->previous;
-    if (length < mlength) {
-      return -2;
-    }
-    if(sizeof(buffer) != sizeof(msg->message)
-  {
-  return -2;
-  } 
-  copy_to_user(buffer, msg->message, length);
-    /* copy message */
-    // implec acess_()
-    // impelce copy from user and to user
-
-    /* free memory */
-    kfree(msg->message);
-    kfree(msg);
-
-    return mlength;
-  }
-  return -1;
-
 
 }
