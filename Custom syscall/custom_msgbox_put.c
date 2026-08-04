@@ -7,7 +7,9 @@
 #include <string.h>
 #include/uapi/asm-generic/errno.h
 #include/uapi/asm-generic/errno-base.h
-include/linux/irqflags.h
+#include/linux/irqflags.h
+
+// irqflags.h the irqflag needs to be impelente 
 
 asmlinkage 
 
